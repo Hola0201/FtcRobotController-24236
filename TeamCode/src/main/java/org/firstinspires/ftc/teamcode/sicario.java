@@ -34,6 +34,10 @@ public class sicario extends OpMode
     private DcMotorEx juan = null;
     private DcMotorEx pancho = null;
     private DcMotorEx caballo = null;
+    private DcMotorEx lapatrona = null;
+    private DcMotorEx paquito = null;
+    private DcMotorEx kiki = null;
+    
 
 
 
@@ -51,11 +55,31 @@ public class sicario extends OpMode
         juan = hardwareMap.get(DcMotorEx.class,"juan");
         pancho = hardwareMap.get(DcMotorEx.class,"pancho");
         caballo = hardwareMap.get(DcMotorEx.class,"caballo");
+        
+        
+        lapatrona = hardwareMap.get(DcMotorEx.class,"lapatrona");
+        paquito = hardwareMap.get(DcMotorEx.class,"paquito");
+        kiki = hardwareMap.get(DcMotorEx.class,"kiki");
+        
 
         cuca.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         juan.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         pancho.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         caballo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        
+        kiki.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        kiki.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        kiki.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+       lapatrona.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       lapatrona.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+       lapatrona.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+
+      paquito.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      paquito.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+      paquito.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -65,6 +89,9 @@ public class sicario extends OpMode
        caballo.setDirection(DcMotorEx.Direction.REVERSE);
        pancho.setDirection(DcMotorEx.Direction.FORWARD);
 
+       lapatrona.setDirection(DcMotorEx.Direction.FORWARD);
+       paquito.setDirection(DcMotorEx.Direction.REVERSE);
+       kiki.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         // Tell the driver that initialization is complete.
@@ -93,10 +120,17 @@ public class sicario extends OpMode
     public void loop() {
 
         double chasisMax = 2500;
+        double shotMax = 2500;
 
         double drive = gamepad1.left_stick_y;
         double turn = -gamepad1.right_stick_x;
         double lf = gamepad1.left_trigger-gamepad1.right_trigger;
+        
+       double lapatronaP = gamepad2.left_trigger*shotMax;
+       double paquitoP = gamepad2.left_stick_y*shotMax;
+       double kikiP = gamepad2.right_trigger*shotMax;
+
+
 
 
         double cucaP = Range.clip(drive+lf+turn,-1,1);
@@ -108,7 +142,9 @@ public class sicario extends OpMode
         juan.setVelocity(juanP*chasisMax);
         pancho.setVelocity(panchoP*chasisMax);
         caballo.setVelocity(caballoP*chasisMax);
-
+        lapatrona.setVelocity(lapatronaP);
+        paquito.setVelocity(paquitoP);
+        kiki.setVelocity(kikiP);
 
 
         // Show the elapsed game time and wheel power.
