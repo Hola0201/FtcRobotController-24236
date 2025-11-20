@@ -25,8 +25,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: sicario", group="sicario")
-@Disabled
+@TeleOp(name="sicario", group="sicario")
 public class sicario extends OpMode
 {
     // Declare OpMode members.
@@ -96,8 +95,8 @@ public class sicario extends OpMode
         double chasisMax = 2500;
 
         double drive = gamepad1.left_stick_y;
-        double turn = gamepad1.right_stick_x;
-        double lf = gamepad1.right_trigger-gamepad1.left_trigger;
+        double turn = -gamepad1.right_stick_x;
+        double lf = gamepad1.left_trigger-gamepad1.right_trigger;
 
 
         double cucaP = Range.clip(drive+lf+turn,-1,1);
