@@ -91,7 +91,7 @@ public class sicario extends OpMode
 
        lapatrona.setDirection(DcMotorEx.Direction.FORWARD);
        paquito.setDirection(DcMotorEx.Direction.REVERSE);
-       kiki.setDirection(DcMotorSimple.Direction.REVERSE);
+       kiki.setDirection(DcMotorSimple.Direction.FORWARD);
 
 
         // Tell the driver that initialization is complete.
@@ -120,14 +120,15 @@ public class sicario extends OpMode
     public void loop() {
 
         double chasisMax = 2500;
-        double shotMax = 2500;
+        double shotMax = 6000;
+        double inmax = 2500;
 
         double drive = gamepad1.left_stick_y;
         double turn = -gamepad1.right_stick_x;
-        double lf = gamepad1.left_trigger-gamepad1.right_trigger;
+        double lf = -gamepad1.left_stick_x;
         
-       double lapatronaP = gamepad2.left_trigger*shotMax;
-       double paquitoP = gamepad2.left_stick_y*shotMax;
+       double lapatronaP = gamepad2.left_trigger*inmax;
+       double paquitoP = gamepad2.left_stick_y*inmax;
        double kikiP = gamepad2.right_trigger*shotMax;
 
 
