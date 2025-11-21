@@ -132,6 +132,14 @@ public class sicario extends OpMode
 
 
 
+        if (gamepad2.y) {
+            lapatrona.setVelocity(-shotMax);  // Mover en reversa
+        } else {
+            lapatrona.setVelocity(lapatronaP);  // Control normal con left trigger
+        }
+
+
+
 
         double cucaP = Range.clip(drive+lf+turn,-1,1);
         double juanP = Range.clip(drive-lf-turn,-1,1);
