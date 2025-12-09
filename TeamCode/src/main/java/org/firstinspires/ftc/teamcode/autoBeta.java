@@ -31,7 +31,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
@@ -65,16 +67,13 @@ public class autoBeta extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotorEx LBMotor = null;
-    private DcMotorEx RBMotor = null;
-    private DcMotorEx LFMotor = null;
-    private DcMotorEx RFMotor = null;
-    private DcMotorEx pickUp = null;
-    private DcMotorEx launch = null;
-
-    // You are not allowed to judge I am sleep deprived
-    private DcMotorEx rightPelvis = null;
-    private DcMotorEx leftPelvis = null;
+    private DcMotorEx cuca = null;
+    private DcMotorEx juan = null;
+    private DcMotorEx pancho = null;
+    private DcMotorEx caballo = null;
+    private DcMotorEx lapatrona = null;
+    private DcMotorEx paquito = null;
+    private DcMotorEx kiki = null;
 
     // Calculate the COUNTS_PER_CM for your specific drive train.
     // Go to your motor vendor website to determine your motor's COUNTS_PER_MOTOR_REV
@@ -94,56 +93,58 @@ public class autoBeta extends LinearOpMode {
     public void runOpMode() {
 
         // Initialize the drive system variables.
-        LBMotor = hardwareMap.get(DcMotorEx.class, "LBMotor");
-        RBMotor = hardwareMap.get(DcMotorEx.class, "RBMotor");
-        LFMotor = hardwareMap.get(DcMotorEx.class, "LFMotor");
-        RFMotor = hardwareMap.get(DcMotorEx.class, "RFMotor");
+        cuca = hardwareMap.get(DcMotorEx.class,"cuca");
+        juan = hardwareMap.get(DcMotorEx.class,"juan");
+        pancho = hardwareMap.get(DcMotorEx.class,"pancho");
+        caballo = hardwareMap.get(DcMotorEx.class,"caballo");
 
-        // Initializing the Motors to the correct entry
-        pickUp = hardwareMap.get(DcMotorEx.class, "pickUp");
-        rightPelvis = hardwareMap.get(DcMotorEx.class, "rightPelvis");
-        leftPelvis = hardwareMap.get(DcMotorEx.class, "leftPelvis");
-        launch = hardwareMap.get(DcMotorEx.class, "launch");
+
+        lapatrona = hardwareMap.get(DcMotorEx.class,"lapatrona");
+        paquito = hardwareMap.get(DcMotorEx.class,"paquito");
+        kiki = hardwareMap.get(DcMotorEx.class,"kiki");
+
 
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        LBMotor.setDirection(DcMotorEx.Direction.FORWARD);
-        RBMotor.setDirection(DcMotorEx.Direction.FORWARD);
-        LFMotor.setDirection(DcMotorEx.Direction.FORWARD);
-        RFMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        cuca.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        juan.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pancho.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        caballo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // Directions for the throwing motors
-        leftPelvis.setDirection(DcMotorEx.Direction.FORWARD);
-        rightPelvis.setDirection(DcMotorEx.Direction.REVERSE);
+        kiki.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        kiki.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        kiki.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        pickUp.setDirection(DcMotorEx.Direction.REVERSE);
-        pickUp.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        pickUp.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        pickUp.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        lapatrona.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lapatrona.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        lapatrona.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        leftPelvis.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        rightPelvis.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        leftPelvis.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        rightPelvis.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        leftPelvis.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        rightPelvis.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        launch.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        launch.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        launch.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        LBMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        LFMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        RBMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        RFMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        paquito.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        paquito.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        paquito.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+
+        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
+        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+        cuca.setDirection(DcMotorEx.Direction.REVERSE);
+        juan.setDirection(DcMotorEx.Direction.FORWARD);
+        caballo.setDirection(DcMotorEx.Direction.REVERSE);
+        pancho.setDirection(DcMotorEx.Direction.FORWARD);
+
+        lapatrona.setDirection(DcMotorEx.Direction.FORWARD);
+        paquito.setDirection(DcMotorEx.Direction.REVERSE);
+        kiki.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Starting at", "%7d :%7d :%7d :%7d",
-                LBMotor.getCurrentPosition(),
-                LFMotor.getCurrentPosition(),
-                RBMotor.getCurrentPosition(),
-                RFMotor.getCurrentPosition());
+                cuca.getCurrentPosition(),
+                juan.getCurrentPosition(),
+                pancho.getCurrentPosition(),
+                caballo.getCurrentPosition());
 
         telemetry.update();
 
@@ -170,10 +171,10 @@ public class autoBeta extends LinearOpMode {
     public void encoderDrive(double speed,
                              double driveCm, double strafeCm, double turnCm,
                              double timeoutS) {
-        int newLBTarget;
-        int newRBTarget;
-        int newLFTarget;
-        int newRFTarget;
+        int newCaballoTarget;
+        int newPanchoTarget;
+        int newCucaTarget;
+        int newJuanTarget;
 
 
         // Ensure that the OpMode is still active
@@ -181,29 +182,29 @@ public class autoBeta extends LinearOpMode {
 
             // Determine new target position, and pass to motor controller
 
-            newLBTarget = LBMotor.getCurrentPosition() + (int)((driveCm-strafeCm+turnCm) * COUNTS_PER_CM);
-            newRBTarget = RBMotor.getCurrentPosition() + (int)((driveCm+strafeCm-turnCm) * COUNTS_PER_CM);
-            newLFTarget = LFMotor.getCurrentPosition() + (int)((driveCm+strafeCm+turnCm) * COUNTS_PER_CM);
-            newRFTarget = RFMotor.getCurrentPosition() + (int)((driveCm-strafeCm-turnCm) * COUNTS_PER_CM);
+            newCaballoTarget = caballo.getCurrentPosition() + (int)((driveCm-strafeCm+turnCm) * COUNTS_PER_CM);
+            newPanchoTarget = pancho.getCurrentPosition() + (int)((driveCm+strafeCm-turnCm) * COUNTS_PER_CM);
+            newCucaTarget = cuca.getCurrentPosition() + (int)((driveCm+strafeCm+turnCm) * COUNTS_PER_CM);
+            newJuanTarget = juan.getCurrentPosition() + (int)((driveCm-strafeCm-turnCm) * COUNTS_PER_CM);
 
-            LBMotor.setTargetPosition(newLBTarget);
-            RBMotor.setTargetPosition(newRBTarget);
-            LFMotor.setTargetPosition(newLFTarget);
-            RFMotor.setTargetPosition(newRFTarget);
+            caballo.setTargetPosition(newCaballoTarget);
+            pancho.setTargetPosition(newPanchoTarget);
+            cuca.setTargetPosition(newCucaTarget);
+            juan.setTargetPosition(newCaballoTarget);
 
 
             // Turn On RUN_TO_POSITION
-            LBMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            RBMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            LFMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            RFMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            caballo.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            pancho.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            cuca.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+            juan.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
-            LBMotor.setPower(Math.abs(speed));
-            RBMotor.setPower(Math.abs(speed));
-            LFMotor.setPower(Math.abs(speed));
-            RFMotor.setPower(Math.abs(speed));
+            caballo.setPower(Math.abs(speed));
+            pancho.setPower(Math.abs(speed));
+            cuca.setPower(Math.abs(speed));
+            juan.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
@@ -213,26 +214,26 @@ public class autoBeta extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (LBMotor.isBusy() && RBMotor.isBusy() && LFMotor.isBusy() && RFMotor.isBusy())) {
+                    (caballo.isBusy() && pancho.isBusy() && cuca.isBusy() && juan.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Running to",  " %7d :%7d :%7d :%7d", newLBTarget,  newRBTarget, newLFTarget,  newRFTarget);
+                telemetry.addData("Running to",  " %7d :%7d :%7d :%7d", newCaballoTarget,  newPanchoTarget, newCucaTarget,  newJuanTarget);
                 telemetry.addData("Currently at",  " at %7d :%7d :%7d :%7d ",
-                        LBMotor.getCurrentPosition(), RBMotor.getCurrentPosition(), LFMotor.getCurrentPosition(), RFMotor.getCurrentPosition());
+                        caballo.getCurrentPosition(), pancho.getCurrentPosition(), cuca.getCurrentPosition(), juan.getCurrentPosition());
                 telemetry.update();
             }
 
             // Stop all motion;
-            LBMotor.setPower(0);
-            RBMotor.setPower(0);
-            LFMotor.setPower(0);
-            RFMotor.setPower(0);
+            caballo.setPower(0);
+            pancho.setPower(0);
+            cuca.setPower(0);
+            juan.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            LBMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-            RBMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-            LFMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-            RFMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            caballo.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            pancho.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            cuca.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+            juan.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
             sleep(250);   // optional pause after each move.
         }
