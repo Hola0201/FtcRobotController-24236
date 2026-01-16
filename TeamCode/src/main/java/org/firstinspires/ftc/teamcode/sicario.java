@@ -40,6 +40,9 @@ public class sicario extends OpMode
 
     private DcMotorEx hondo = null;
 
+    boolean lastA = false;
+
+
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -144,14 +147,23 @@ public class sicario extends OpMode
             //lapatrona.setVelocity(lapatronaP);  // Control normal con left trigger
         }
 
-        if (gamepad2.a) {
-            int hondoTarget = hondo.getCurrentPosition()+100;
+        if (gamepad2.a && !lastA) {
+            int hondoTarget = hondo.getCurrentPosition() + 2700;
             hondo.setTargetPosition(hondoTarget);
-            hondo.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            hondo.setPower(0.5);
-
-
+            hondo.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            hondo.setPower(1);
         }
+
+        lastA = gamepad2.a;
+
+// Add this check - stop trying to reach position once close enough
+        if (hondo.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
+            if (Math.abs(hondo.getTargetPosition() - hondo.getCurrentPosition()) < 50) {
+                hondo.setPower(0);
+                hondo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+        }
+
         double cucaP = Range.clip(drive+lf+turn,-1,1);
         double juanP = Range.clip(drive-lf-turn,-1,1);
         double panchoP = Range.clip(drive+lf-turn,-1,1);
@@ -168,6 +180,10 @@ public class sicario extends OpMode
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)");
+        telemetry.addData("hondo-pos", "%d", hondo.getCurrentPosition());
+
+        telemetry.update();
+
 
     }
 
