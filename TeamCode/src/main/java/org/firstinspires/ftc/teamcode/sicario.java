@@ -29,18 +29,16 @@ public class sicario extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-   // private DcMotorEx cuca = null;
-    //private DcMotorEx juan = null;
-    //private DcMotorEx pancho = null;
-    //private DcMotorEx caballo = null;
-    //private DcMotorEx lapatrona = null;
+    private DcMotorEx cuca = null;
+    private DcMotorEx juan = null;
+    private DcMotorEx pancho = null;
+    private DcMotorEx caballo = null;
+    private DcMotorEx lapatrona = null;
     private DcMotorEx paquito = null;
     private DcMotorEx kiki = null;
 
 
-    private DcMotorEx hondo = null;
 
-    boolean lastA = false;
 
 
 
@@ -53,49 +51,47 @@ public class sicario extends OpMode
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        //cuca = hardwareMap.get(DcMotorEx.class,"cuca");
-        //juan = hardwareMap.get(DcMotorEx.class,"juan");
-        //pancho = hardwareMap.get(DcMotorEx.class,"pancho");
-        //caballo = hardwareMap.get(DcMotorEx.class,"caballo");
+        //step (using the FTC Robot Controller app on the phone).
+        cuca = hardwareMap.get(DcMotorEx.class,"cuca");
+        juan = hardwareMap.get(DcMotorEx.class,"juan");
+        pancho = hardwareMap.get(DcMotorEx.class,"pancho");
+        caballo = hardwareMap.get(DcMotorEx.class,"caballo");
 
 
-        //lapatrona = hardwareMap.get(DcMotorEx.class,"lapatrona");
+        lapatrona = hardwareMap.get(DcMotorEx.class,"lapatrona");
         paquito = hardwareMap.get(DcMotorEx.class,"paquito");
         kiki = hardwareMap.get(DcMotorEx.class,"kiki");
-        hondo = hardwareMap.get(DcMotorEx.class,"hondo");
 
 
-        //cuca.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        //juan.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //pancho.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        //caballo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        cuca.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        juan.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pancho.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        caballo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         kiki.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         kiki.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         kiki.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        //lapatrona.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //lapatrona.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        //lapatrona.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        lapatrona.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lapatrona.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        lapatrona.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
 
         paquito.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         paquito.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         paquito.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        hondo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        hondo.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        hondo.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
 
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        //cuca.setDirection(DcMotorEx.Direction.REVERSE);
-        //juan.setDirection(DcMotorEx.Direction.FORWARD);
-        //caballo.setDirection(DcMotorEx.Direction.REVERSE);
-        //pancho.setDirection(DcMotorEx.Direction.FORWARD);
+        cuca.setDirection(DcMotorEx.Direction.REVERSE);
+        juan.setDirection(DcMotorEx.Direction.FORWARD);
+        caballo.setDirection(DcMotorEx.Direction.REVERSE);
+        pancho.setDirection(DcMotorEx.Direction.FORWARD);
 
         //lapatrona.setDirection(DcMotorEx.Direction.FORWARD);
         paquito.setDirection(DcMotorEx.Direction.REVERSE);
@@ -134,7 +130,7 @@ public class sicario extends OpMode
         double turn = -gamepad1.right_stick_x;
         double lf = -gamepad1.left_stick_x;
 
-        //double lapatronaP = gamepad2.left_trigger*shotMax;
+        double lapatronaP = gamepad2.left_trigger*shotMax;
         double paquitoP = gamepad2.left_stick_y*chasisMax;
 
         double kikiP = gamepad2.right_trigger-gamepad2.left_trigger;
@@ -142,26 +138,9 @@ public class sicario extends OpMode
 
 
         if (gamepad2.y) {
-          //  lapatrona.setVelocity(-shotMax);  // Mover en reversa
+          lapatrona.setVelocity(-shotMax);  // Mover en reversa
         } else {
-            //lapatrona.setVelocity(lapatronaP);  // Control normal con left trigger
-        }
-
-        if (gamepad2.a && !lastA) {
-            int hondoTarget = hondo.getCurrentPosition() + 2700;
-            hondo.setTargetPosition(hondoTarget);
-            hondo.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            hondo.setPower(1);
-        }
-
-        lastA = gamepad2.a;
-
-// Add this check - stop trying to reach position once close enough
-        if (hondo.getMode() == DcMotor.RunMode.RUN_TO_POSITION) {
-            if (Math.abs(hondo.getTargetPosition() - hondo.getCurrentPosition()) < 50) {
-                hondo.setPower(0);
-                hondo.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            }
+            lapatrona.setVelocity(lapatronaP);  // Control normal con left trigger
         }
 
         double cucaP = Range.clip(drive+lf+turn,-1,1);
@@ -169,18 +148,18 @@ public class sicario extends OpMode
         double panchoP = Range.clip(drive+lf-turn,-1,1);
         double caballoP = Range.clip(drive-lf+turn,-1,1);
 
-        //cuca.setVelocity(cucaP*chasisMax);
-        //juan.setVelocity(juanP*chasisMax);
-        //pancho.setVelocity(panchoP*chasisMax);
-        //caballo.setVelocity(caballoP*chasisMax);
-        //lapatrona.setVelocity(lapatronaP);
+        cuca.setVelocity(cucaP*chasisMax);
+        juan.setVelocity(juanP*chasisMax);
+        pancho.setVelocity(panchoP*chasisMax);
+        caballo.setVelocity(caballoP*chasisMax);
+        lapatrona.setVelocity(lapatronaP);
         kiki.setPower(kikiP);
         paquito.setPower(paquitoP);
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)");
-        telemetry.addData("hondo-pos", "%d", hondo.getCurrentPosition());
+
 
         telemetry.update();
 

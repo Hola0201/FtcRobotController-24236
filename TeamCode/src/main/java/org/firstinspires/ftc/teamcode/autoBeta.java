@@ -153,7 +153,19 @@ public class autoBeta extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(0.5, 100, 0, 0, 5);
+
+        //Kiki, Estas son lass instrucciones del autonomo, editalas
+        kiki.setVelocity(4500);
+        waitS(3);
+        paquito.setVelocity(2500);
+        waitS(1.5);
+        lapatrona.setVelocity(2500);
+        waitS(5);
+        kiki.setVelocity(0);
+        lapatrona.setVelocity(0);
+        paquito.setVelocity(0);
+        encoderDrive(0.5, -100, 0, 0, 5);
+        encoderDrive(0.5, 0, 0, -25, 5);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -236,6 +248,12 @@ public class autoBeta extends LinearOpMode {
             juan.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
             sleep(250);   // optional pause after each move.
+        }
+    }
+    public void waitS(double timeS){
+        runtime.reset();
+        while (opModeIsActive() && runtime.seconds() < timeS) {
+            // Just wait for 1 second
         }
     }
 }
